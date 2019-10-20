@@ -34,24 +34,16 @@ namespace Symlinker
         {
             pathFrom = InputFrom.Text;
             pathTo = InputTo.Text;
-
-            if ((new FileInfo(pathFrom)).Exists)
+            using (Process process = new Process())
             {
-                using (Process process = new Process())
-                {
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    startInfo.FileName = "cmd.exe";
-                    startInfo.Arguments = string.Format("/k mklink /D \"{0}\" \"{1}\"", pathTo, pathFrom);
-                    process.StartInfo = startInfo;
-                    process.Start();
-                }
-                MessageBox.Show(string.Format("Symlink created for {0} <===> {1}", pathFrom, pathTo));
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.FileName = "cmd.exe";
+                startInfo.Arguments = string.Format("/k mklink /D \"{0}\" \"{1}\"", pathTo, pathFrom);
+                process.StartInfo = startInfo;
+                process.Start();
             }
-            else
-            {
-                MessageBox.Show(string.Format("Invalid path: \"{0}]\"", pathFrom), "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            MessageBox.Show(string.Format("Symlink created for {0} <===> {1}", pathFrom, pathTo));
         }
     }
 }
